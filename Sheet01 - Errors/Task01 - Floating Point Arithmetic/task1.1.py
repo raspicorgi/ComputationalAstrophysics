@@ -17,11 +17,12 @@ def plot_func(s_k):
 
 
 if __name__ == "__main__":
-    ks = [10**3, 10**6, 10**7, 10**8] 
+    ks = [10**6, 10**7, 10**8] 
     # Prepare a DataFrame to store results
     results = []
 
     for k in ks:
+        print(f"calculating for k={k}")
         result_float32 = sum(k, np.float32)
         result_float64 = sum(k, np.float64)
         results.append({"k": k, "dtype": "float32", "sum": result_float32})
@@ -33,9 +34,9 @@ if __name__ == "__main__":
     plt.figure(figsize=(10, 6))
     for dtype in df["dtype"].unique():
         subset = df[df["dtype"] == dtype]
-        plt.plot(subset["k"], subset["sum"], marker="o", label=f"Sum with {dtype}")
+        plt.plot(subset["k"], plot_func(subset["sum"]), marker="o", label=f"{dtype}")
 
-    plt.axhline(analytical_result, color="red", linestyle="--", label="Analytical Result")
+    # plt.axhline(analytical_result, color="red", linestyle="--", label="Analytical Result")
     plt.xscale("log")
     plt.xlabel("k")
     plt.ylabel("Sum")
@@ -43,3 +44,4 @@ if __name__ == "__main__":
     plt.legend()
     plt.grid(True)
     plt.show()
+    plt.savefig("task1.1.png")
